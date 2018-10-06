@@ -95,9 +95,79 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+const pointersGesture = {};
+
 class Webcam {
-  constructor() {
-    alert("init");
+  constructor(element) {
+    this.element = {
+      image: element.querySelector(".webcam-image"),
+      controls: element.querySelector(".webcam-controls")
+    };
+
+    this.position = {
+      dx: 0,
+      scale: 1
+    };
+
+    this.initEvents();
+  }
+
+  changeBrightness() {}
+
+  scaleCamera() {}
+
+  moveCamera(dx) {
+    this.position.dx += dx;
+
+    this.element.image.style.backgroundPosition = this.position.dx + "px";
+  }
+
+  initEvents() {
+    this.element.image.addEventListener("pointerdown", this.addPointer);
+
+    ["pointerup", "pointerout", "pointerleave"].forEach(event => {
+      this.element.image.addEventListener(event, this.removePointer);
+    });
+
+    this.element.image.addEventListener("pointermove", this.movePointer.bind(this));
+  }
+
+  addPointer(e) {
+    pointersGesture[e.pointerId] = {
+      prevX: e.x
+    };
+  }
+
+  removePointer(e) {
+    delete pointersGesture[e.pointerId];
+  }
+
+  movePointer(e) {
+    const { pointerId, x } = e;
+    const gesture = pointersGesture[pointerId];
+
+    if (!gesture) {
+      return null;
+    }
+
+    const isOnePointerMove = Object.keys(pointersGesture).length === 1;
+    const isPartOfTwoPointersMove = Object.keys(pointersGesture).length === 2;
+
+    // one pointer means camera move gesture
+    if (isOnePointerMove) {
+      const dx = x - gesture.prevX;
+
+      this.moveCamera(dx);
+    }
+
+    if (isPartOfTwoPointersMove) {
+      // pinch
+      // rotate
+    }
+
+    pointersGesture[pointerId] = {
+      prevX: x
+    };
   }
 }
 
@@ -117,7 +187,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_webcam_webcam_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/webcam/webcam.js */ "./src/components/webcam/webcam.js");
 
 
-const homeWebcam = new _components_webcam_webcam_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
+const webcamElement = document.getElementById("webcam");
+
+if (webcamElement) {
+  const homeWebcam = new _components_webcam_webcam_js__WEBPACK_IMPORTED_MODULE_0__["default"](webcamElement);
+}
 
 /***/ })
 
