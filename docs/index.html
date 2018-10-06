@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="stylesheet" href="/styles.css"/>
+    <title>Яндекс Дом</title>
+  </head>
+</html>
+<body>
+  <div class="invisible"></div>
+  <main class="application" id="application">
+    <header class="header">
+      <div class="header-content">
+        <div class="header-logotype"><a href="#"><img class="logotype" src="/images/logo@2x.png" alt="Логотип"/></a></div>
+        <nav class="header-menu">
+          <ul class="header-menu-list" id="header-menu">
+            <li class="header-menu-list__item header-menu-list__item_state-active"><a href="#">Сводка</a></li>
+            <li class="header-menu-list__item"><a href="#">Устройства</a></li>
+            <li class="header-menu-list__item"><a href="#">Сценарии</a></li>
+          </ul>
+          <button class="header-menu__burger" id="header-burger"><img src="/images/icon_list_m@2x.png"/></button>
+        </nav>
+      </div>
+    </header>
+    <div class="application-content">
+      <div class="webcam" id="webcam">
+        <div class="webcam-field">
+          <div class="webcam-image"></div>
+        </div>
+        <div class="webcam-controls">
+          <div class="webcam-info webcam-info_type-zoom">
+            <div class="webcam-info__type">Приближение:</div>
+            <div class="webcam-info__value"> 78%</div>
+          </div>
+          <div class="webcam-info webcam-info_type-bright">
+            <div class="webcam-info__type">Яркость: </div>
+            <div class="webcam-info__value">50%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <ul class="footer-links">
+        <li class="footer-links__item"><a href="#">Помощь</a></li>
+        <li class="footer-links__item"><a href="#">Обратная связь</a></li>
+        <li class="footer-links__item"><a href="#">Разработчикам</a></li>
+        <li class="footer-links__item"><a href="#">Условия использования</a></li>
+      </ul>
+      <div class="footer-copyright">© 2001–2017  ООО «Яндекс»</div>
+    </footer>
+  </main>
+</body>
+<script src="./scripts/main.js"></script>

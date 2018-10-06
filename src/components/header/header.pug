@@ -1,0 +1,20 @@
+include ../icon/icon.pug
+
+header.header
+  .header-content
+    .header-logotype
+      a(href="#")
+        img.logotype(src="/images/logo@2x.png", alt="Логотип")
+
+    nav.header-menu
+      ul.header-menu-list#header-menu
+        li.header-menu-list__item.header-menu-list__item_state-active
+          a(href="#") Сводка
+        li.header-menu-list__item
+          a(href="#") Устройства
+        li.header-menu-list__item
+          a(href="#") Сценарии
+      
+      button.header-menu__burger#header-burger
+        img(src="/images/icon_list_m@2x.png")
+      

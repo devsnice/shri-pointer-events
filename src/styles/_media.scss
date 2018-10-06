@@ -1,0 +1,23 @@
+$breakpoint-mobile: 768px;
+
+/**
+ *  Media mixin
+ *  
+ *  How to use:
+ *  @include media("mobile") - @media screen and (max-width: 768px)
+ *  @include media("desktop")- @media screen and (min-width: 768px)
+**/
+
+@mixin media($screenType) {
+  $query: "screen and";
+
+  @if ($screenType == "mobile") {
+    $query: "(max-width:" + $breakpoint-mobile ")";
+  } @else {
+    $query: "(min-width:" + $breakpoint-mobile + ")";
+  }
+
+  @media #{$query} {
+    @content;
+  }
+}

@@ -1,0 +1,8 @@
+mixin icon(iconName, size = 12, className)
+  svg(
+    role="img" 
+    width=size + "px" 
+    height=size + "px" 
+    class="icon icon_"+iconName + " " + className
+  )
+    use(xlink:href="#"+iconName)

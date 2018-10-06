@@ -1,0 +1,15 @@
+include ./head.pug
+
+body
+  .invisible
+    include ./css/svg-symbols.svg
+
+  main.application#application
+    include ../components/header/header.pug
+
+    div.application-content
+      block page-content
+
+    include ../components/footer/footer.pug
+  
+include ./scripts.pug

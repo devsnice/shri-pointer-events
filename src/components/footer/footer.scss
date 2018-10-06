@@ -1,0 +1,39 @@
+@import "../../styles/media";
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 40px 27px;
+  background: #fff;
+
+  @include media("mobile") {
+    display: block;
+    margin-top: 30px;
+    padding: 0 0 20px 27px;
+  }
+
+  &-links {
+    &__item {
+      display: inline-block;
+      font-size: 12px;
+      color: #858585;
+      text-align: left;
+      padding-right: 15px;
+
+      @include media("mobile") {
+        display: block;
+        line-height: 20px;
+      }
+    }
+  }
+
+  &-copyright {
+    font-size: 12px;
+    color: #858585;
+    text-align: left;
+
+    @include media("mobile") {
+      margin-top: 15px;
+    }
+  }
+}

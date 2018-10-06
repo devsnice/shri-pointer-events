@@ -1,0 +1,135 @@
+@import "../../styles/vars";
+@import "../../styles/media";
+
+.header {
+  background: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  height: 92px;
+  width: 100%;
+
+  @include media("mobile") {
+    height: 51px;
+    top: 0;
+    position: fixed;
+    border-bottom: none;
+
+    @supports (position: sticky) {
+      position: sticky;
+    }
+  }
+
+  &-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    padding: 0 $paddingSideDesktop;
+
+    @include media("mobile") {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 $paddingSideMobile;
+    }
+  }
+
+  &-logotype {
+    padding: 32px 0;
+    float: left;
+
+    @include media("mobile") {
+      padding: 0;
+    }
+  }
+
+  &-menu {
+    $menu: &;
+
+    margin-left: 52px;
+    padding: 36px 0;
+
+    @include media("mobile") {
+      padding: 0;
+      margin: 0;
+    }
+
+    &-list {
+      $menu-list: &;
+
+      @include media("mobile") {
+        display: none;
+      }
+
+      &__item {
+        display: inline-block;
+        margin-right: 28px;
+        font-size: 16px;
+        color: #333333;
+        line-height: 20px;
+        opacity: 0.6;
+        font-weight: 700;
+
+        &_state {
+          &-active {
+            opacity: 1;
+          }
+        }
+
+        &:hover,
+        &:focus {
+          color: #333333;
+        }
+      }
+
+      &_state {
+        &-mobile {
+          position: absolute;
+          top: 51px;
+          width: 100%;
+          height: auto;
+          background: #fff;
+          padding: 50px 0;
+          left: 0;
+          box-shadow: 0 2px 6px 0 rgba(197, 186, 186, 0.5);
+
+          #{$menu-list}__item {
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            font-size: 24px;
+            text-align: center;
+            margin-right: 0;
+          }
+        }
+
+        &-mobile-opened {
+          display: block;
+        }
+      }
+    }
+
+    &__burger {
+      cursor: pointer;
+      display: none;
+
+      img {
+        width: 16px;
+        height: 13px;
+      }
+
+      @include media("mobile") {
+        display: block;
+      }
+    }
+  }
+}
+
+.logotype {
+  width: 127px;
+  height: 27px;
+  display: block;
+
+  @include media("mobile") {
+    width: 110px;
+  }
+}
