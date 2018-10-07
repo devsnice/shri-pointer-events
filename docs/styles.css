@@ -52,9 +52,6 @@
   -webkit-filter: blur(3px);
   filter: blur(3px);
 }
-.test {
-  background: green;
-}
 h1,
 h2,
 h3,
@@ -478,6 +475,9 @@ template {
 [hidden] {
   display: none;
 }
+.test {
+  background: green;
+}
 /**
  *  Media mixin
  *  
@@ -530,6 +530,19 @@ template {
   .footer-copyright {
     margin-top: 15px;
   }
+}
+.icon {
+  vertical-align: middle;
+}
+
+.icon_rotate-180 {
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.icon_rotate-270 {
+  -webkit-transform: rotate(270deg);
+  transform: rotate(270deg);
 }
 /**
  *  Media mixin
@@ -687,19 +700,6 @@ template {
     width: 110px;
   }
 }
-.icon {
-  vertical-align: middle;
-}
-
-.icon_rotate-180 {
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
-}
-
-.icon_rotate-270 {
-  -webkit-transform: rotate(270deg);
-  transform: rotate(270deg);
-}
 .webcam {
   max-width: 70%;
   height: 500px;
@@ -711,6 +711,12 @@ template {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  -ms-touch-action: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .webcam-image {
@@ -719,12 +725,10 @@ template {
   background-size: cover;
   width: 100%;
   height: 100%;
-  -ms-touch-action: none;
-  touch-action: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+  -webkit-transition: 0.2 ease;
+  transition: 0.2 ease;
 }
 
 .webcam-controls {

@@ -8,6 +8,8 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    touch-action: none;
+    user-select: none;
   }
 
   &-image {
@@ -16,8 +18,8 @@
     background-size: cover;
     width: 100%;
     height: 100%;
-    touch-action: none;
-    user-select: none;
+    transform: scale(1);
+    transition: 0.2 ease;
   }
 
   &-controls {
