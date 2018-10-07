@@ -723,6 +723,8 @@ template {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  -webkit-filter: brightness(0.5);
+  filter: brightness(0.5);
 }
 
 .webcam-image {
