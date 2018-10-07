@@ -86,6 +86,48 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/components/webcam/throttle.js":
+/*!*******************************************!*\
+  !*** ./src/components/webcam/throttle.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function throttle(func, ms) {
+  var isThrottled = false,
+      savedArgs,
+      savedThis;
+
+  function wrapper() {
+    if (isThrottled) {
+      // (2)
+      savedArgs = arguments;
+      savedThis = this;
+      return;
+    }
+
+    func.apply(this, arguments); // (1)
+
+    isThrottled = true;
+
+    setTimeout(function () {
+      isThrottled = false; // (3)
+      if (savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = savedThis = null;
+      }
+    }, ms);
+  }
+
+  return wrapper;
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (throttle);
+
+/***/ }),
+
 /***/ "./src/components/webcam/webcam.js":
 /*!*****************************************!*\
   !*** ./src/components/webcam/webcam.js ***!
@@ -95,11 +137,13 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _throttle__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./throttle */ "./src/components/webcam/throttle.js");
+
+
 const pointersGesture = {};
 
 const pinchGesture = {
   prevDistance: null,
-  inWork: false,
   lastTime: 0
 };
 
@@ -121,6 +165,7 @@ class Webcam {
     };
 
     this.initEvents();
+    this.tryPinchGesture = Object(_throttle__WEBPACK_IMPORTED_MODULE_0__["default"])(this.tryPinchGesture, 50);
   }
 
   changeBrightness() {}
@@ -144,7 +189,7 @@ class Webcam {
   initEvents() {
     this.element.container.addEventListener("pointerdown", this.addPointer);
 
-    ["pointerup", "pointerout", "pointerleave"].forEach(event => {
+    ["pointerup", "pointerout", "pointerleave", "pointercancel"].forEach(event => {
       this.element.container.addEventListener(event, this.removePointer);
     });
 
@@ -185,6 +230,7 @@ class Webcam {
     if (isPartOfTwoPointersMove) {
       let secondGesturePointerId;
 
+      // looking for id of the second pointer
       Object.keys(pointersGesture).some(gesturePointerId => {
         if (gesturePointerId !== pointerId) {
           secondGesturePointerId = gesturePointerId;
@@ -194,7 +240,7 @@ class Webcam {
         return false;
       });
 
-      // try to figure out, there is pinch
+      // try to figure out, there is a pinch
       this.tryPinchGesture({
         event: event,
         secondGesture: pointersGesture[secondGesturePointerId]
@@ -208,12 +254,6 @@ class Webcam {
   }
 
   tryPinchGesture({ event, secondGesture }) {
-    if (pinchGesture.inWork) {
-      return null;
-    } else {
-      pinchGesture.inWork = true;
-    }
-
     const currentDistance = Math.hypot(secondGesture.prevX - event.x, secondGesture.prevY - event.y);
 
     if (pinchGesture.prevDistance > 0) {
@@ -230,7 +270,6 @@ class Webcam {
       }
     }
 
-    pinchGesture.inWork = false;
     pinchGesture.prevDistance = currentDistance;
   }
 }

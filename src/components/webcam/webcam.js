@@ -1,8 +1,9 @@
+import throttle from "./throttle";
+
 const pointersGesture = {};
 
 const pinchGesture = {
   prevDistance: null,
-  inWork: false,
   lastTime: 0
 };
 
@@ -24,6 +25,7 @@ class Webcam {
     };
 
     this.initEvents();
+    this.tryPinchGesture = throttle(this.tryPinchGesture, 50);
   }
 
   changeBrightness() {}
@@ -47,9 +49,11 @@ class Webcam {
   initEvents() {
     this.element.container.addEventListener("pointerdown", this.addPointer);
 
-    ["pointerup", "pointerout", "pointerleave"].forEach(event => {
-      this.element.container.addEventListener(event, this.removePointer);
-    });
+    ["pointerup", "pointerout", "pointerleave", "pointercancel"].forEach(
+      event => {
+        this.element.container.addEventListener(event, this.removePointer);
+      }
+    );
 
     this.element.container.addEventListener(
       "pointermove",
@@ -91,6 +95,7 @@ class Webcam {
     if (isPartOfTwoPointersMove) {
       let secondGesturePointerId;
 
+      // looking for id of the second pointer
       Object.keys(pointersGesture).some(gesturePointerId => {
         if (gesturePointerId !== pointerId) {
           secondGesturePointerId = gesturePointerId;
@@ -100,7 +105,7 @@ class Webcam {
         return false;
       });
 
-      // try to figure out, there is pinch
+      // try to figure out, there is a pinch
       this.tryPinchGesture({
         event: event,
         secondGesture: pointersGesture[secondGesturePointerId]
@@ -114,12 +119,6 @@ class Webcam {
   }
 
   tryPinchGesture({ event, secondGesture }) {
-    if (pinchGesture.inWork) {
-      return null;
-    } else {
-      pinchGesture.inWork = true;
-    }
-
     const currentDistance = Math.hypot(
       secondGesture.prevX - event.x,
       secondGesture.prevY - event.y
@@ -139,7 +138,6 @@ class Webcam {
       }
     }
 
-    pinchGesture.inWork = false;
     pinchGesture.prevDistance = currentDistance;
   }
 }
