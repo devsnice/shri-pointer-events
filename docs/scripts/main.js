@@ -244,7 +244,7 @@ class Webcam {
   }
 
   scaleCamera(dy) {
-    const scaleRatio = dy / this.image.height;
+    const scaleRatio = dy * 0.001;
 
     // TODO: refactoring, [min, max]
     if (this.settings.scale + scaleRatio > this.scale.MAX) {
@@ -281,7 +281,9 @@ class Webcam {
       prevX: e.x,
       prevY: e.y,
       startX: e.x,
-      startY: e.y
+      startY: e.y,
+      isPrimary: e.isPrimary,
+      id: e.pointerId
     };
   }
 
@@ -337,26 +339,21 @@ class Webcam {
   }
 
   tryPinchGesture({ event, secondGesture }) {
-    const currentDistance = Math.hypot(secondGesture.prevX - event.x, secondGesture.prevY - event.y);
+    const currentDistance = Math.hypot(event.x - secondGesture.prevX, event.y - secondGesture.prevY);
 
     if (pinchGesture.prevDistance > 0) {
-      const dy = Math.abs(currentDistance - pinchGesture.prevDistance);
+      const dy = currentDistance - pinchGesture.prevDistance;
 
-      if (pinchGesture.prevDistance < currentDistance) {
-        // pinch up
-        this.scaleCamera(dy);
-      }
-
-      if (pinchGesture.prevDistance > currentDistance) {
-        // pinch down
-        this.scaleCamera(-dy);
-      }
+      // pinch down
+      this.scaleCamera(dy);
     }
 
     pinchGesture.prevDistance = currentDistance;
   }
 
   tryRotateGesture({ event, firstGesture, secondGesture }) {
+    if (!event.isPrimary) return null;
+
     // TODO: check distance between pointers,
     // in rotate gesture, distance between pointers should be consistent
 
