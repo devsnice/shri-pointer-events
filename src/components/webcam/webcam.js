@@ -81,7 +81,7 @@ class Webcam {
   changeBrightness(turnInRadians) {
     // turn on 360 radians - means change brightness from zero to 100
     const mapRadiansToBrightness = radians => {
-      const brightness = Math.ceil(100 / (radians + 180));
+      const brightness = Math.ceil(100 / radians);
 
       return brightness;
     };
@@ -99,13 +99,6 @@ class Webcam {
     } else {
       this.settings.brightness += brightnessIncrement;
     }
-
-    // console.log(
-    //   "increment",
-    //   turnInRadians,
-    //   brightnessIncrement,
-    //   this.settings.brightness
-    // );
 
     this.renderIndicator("brightness", this.settings.brightness);
   }
@@ -204,10 +197,8 @@ class Webcam {
       });
     }
 
-    pointersGesture[pointerId] = {
-      prevX: x,
-      prevY: y
-    };
+    pointersGesture[pointerId].prevX = x;
+    pointersGesture[pointerId].prevY = y;
   }
 
   tryPinchGesture({ event, secondGesture }) {
@@ -215,6 +206,10 @@ class Webcam {
       event.x - secondGesture.prevX,
       event.y - secondGesture.prevY
     );
+
+    // TODO: think about beginDistance here
+    // now I calculate DY as function from previous pointer moving distance
+    // it creates trouble with shaking image
 
     if (pinchGesture.prevDistance > 0) {
       const dy = currentDistance - pinchGesture.prevDistance;
@@ -227,8 +222,6 @@ class Webcam {
   }
 
   tryRotateGesture({ event, firstGesture, secondGesture }) {
-    if (!event.isPrimary) return null;
-
     // TODO: check distance between pointers,
     // in rotate gesture, distance between pointers should be consistent
 
