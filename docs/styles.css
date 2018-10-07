@@ -36,11 +36,11 @@
     margin-top: 51px;
   }
 
-@supports ((position: -webkit-sticky) or (position: sticky)) {
+  @supports ((position: -webkit-sticky) or (position: sticky)) {
     .application-content {
       margin-top: 0;
     }
-}
+  }
 }
 
 .application_state-frozen {
@@ -554,12 +554,12 @@ template {
     border-bottom: none;
   }
 
-@supports ((position: -webkit-sticky) or (position: sticky)) {
+  @supports ((position: -webkit-sticky) or (position: sticky)) {
     .header {
       position: -webkit-sticky;
       position: sticky;
     }
-}
+  }
 }
 
 .header-content {
@@ -728,7 +728,7 @@ template {
 }
 
 .webcam-image {
-  background: url("/images/image@3x.jpg");
+  background: url("./images/image@3x.jpg");
   background-position: center;
   background-size: cover;
   width: 100%;

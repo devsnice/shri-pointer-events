@@ -171,14 +171,25 @@ class Webcam {
     this.element = {
       container: element.querySelector(".webcam-field"),
       image: element.querySelector(".webcam-image"),
-      brightnessDisplay: element.querySelector(".webcam-info_type-bright .webcam-info__value")
+      brightnessDisplay: element.querySelector(".webcam-info_type-bright .webcam-info__value"),
+      scaleDisplay: element.querySelector(".webcam-info_type-zoom .webcam-info__value")
     };
 
     this.image = {
       height: parseInt(this.element.image.clientHeight)
     };
 
-    this.position = {
+    this.brightness = {
+      MAX: 100,
+      MIN: 0
+    };
+
+    this.scale = {
+      MAX: 1.5,
+      MIN: 0.25
+    };
+
+    this.settings = {
       dx: 0,
       scale: 1,
       brightness: 50
@@ -195,6 +206,12 @@ class Webcam {
 
       this.element.container.style.filter = `brightness(${value / 100})`;
     }
+
+    if (type === "scale") {
+      this.element.scaleDisplay.innerText = `${(value * 100).toFixed(0)}%`;
+
+      this.element.image.style.transform = `scale(${value})`;
+    }
   }
 
   changeBrightness(turnInRadians) {
@@ -208,33 +225,45 @@ class Webcam {
     const brightnessIncrement = mapRadiansToBrightness(turnInRadians);
 
     // TODO: refactoring, [min, max]
-    if (this.position.brightness + brightnessIncrement > 100) {
-      this.position.brightness = 100;
-    } else if (this.position.brightness + brightnessIncrement < 0) {
-      this.position.brightness = 0;
+    if (this.settings.brightness + brightnessIncrement > this.brightness.MAX) {
+      this.settings.brightness = this.brightness.MAX;
+    } else if (this.settings.brightness + brightnessIncrement < this.brightness.MIN) {
+      this.settings.brightness = this.brightness.MIN;
     } else {
-      this.position.brightness += brightnessIncrement;
+      this.settings.brightness += brightnessIncrement;
     }
 
-    console.log("increment", turnInRadians, brightnessIncrement, this.position.brightness);
+    // console.log(
+    //   "increment",
+    //   turnInRadians,
+    //   brightnessIncrement,
+    //   this.settings.brightness
+    // );
 
-    this.renderIndicator("brightness", this.position.brightness);
+    this.renderIndicator("brightness", this.settings.brightness);
   }
 
   scaleCamera(dy) {
     const scaleRatio = dy / this.image.height;
 
-    this.position.scale += scaleRatio;
+    // TODO: refactoring, [min, max]
+    if (this.settings.scale + scaleRatio > this.scale.MAX) {
+      this.settings.scale = this.scale.MAX;
+    } else if (this.settings.scale + scaleRatio < this.scale.MIN) {
+      this.settings.scale = this.scale.MIN;
+    } else {
+      this.settings.scale += scaleRatio;
+    }
 
-    // console.log("scale", scaleRatio, `scale(${this.position.scale})`);
+    // console.log("scale", scaleRatio, `scale(${this.settings.scale})`);
 
-    this.element.image.style.transform = `scale(${this.position.scale})`;
+    this.renderIndicator("scale", this.settings.scale);
   }
 
   moveCamera(dx) {
-    this.position.dx += dx;
+    this.settings.dx += dx;
 
-    this.element.image.style.backgroundPosition = this.position.dx + "px";
+    this.element.image.style.backgroundPosition = this.settings.dx + "px";
   }
 
   initEvents() {
