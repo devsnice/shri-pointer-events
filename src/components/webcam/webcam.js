@@ -41,7 +41,7 @@ class Webcam {
 
 		this.brightness = {
 			MAX: 100,
-			MIN: 0
+			MIN: 25
 		};
 
 		this.scale = {
