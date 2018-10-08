@@ -1,6 +1,3 @@
-.test {
-  background: green;
-}
 /**
  *  Media mixin
  *  
@@ -55,6 +52,7 @@
   -webkit-filter: blur(3px);
   filter: blur(3px);
 }
+
 h1,
 h2,
 h3,
