@@ -94,11 +94,9 @@ class Webcam {
 		this.renderIndicator("brightness", this.settings.brightness);
 	}
 
-	scaleCamera(dy) {
+	scaleCamera(nextScaleRatio) {
 		// нужно понять, как превратить dy в scale изображения
 		// сейчас проблема в том, что я прибавляю scaleRatio к предыдущему значению
-
-		const nextScaleRatio = dy / (this.image.height / 2) + 1;
 
 		// TODO: refactoring, [min, max]
 		if (nextScaleRatio > this.scale.MAX) {
@@ -192,6 +190,8 @@ class Webcam {
 	}
 
 	tryPinchGesture({ event, firstGesture, secondGesture }) {
+		if (event.isPrimary) return null;
+
 		if (!pinchGesture.beginDistance) {
 			const beginDistance = Math.hypot(
 				firstGesture.startX - secondGesture.startX,
@@ -206,7 +206,7 @@ class Webcam {
 			event.y - secondGesture.prevY
 		);
 
-		const dy = currentDistance - pinchGesture.beginDistance;
+		const dy = currentDistance / pinchGesture.beginDistance;
 
 		// pinch down
 		this.scaleCamera(dy);
