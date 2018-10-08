@@ -193,15 +193,15 @@ class Webcam {
 		// нужно понять, как превратить dy в scale изображения
 		// сейчас проблема в том, что я прибавляю scaleRatio к предыдущему значению
 
-		const scaleRatio = dy * 0.001;
+		const nextScaleRatio = dy / (this.image.height / 2) + 1;
 
 		// TODO: refactoring, [min, max]
-		if (this.settings.scale + scaleRatio > this.scale.MAX) {
+		if (nextScaleRatio > this.scale.MAX) {
 			this.settings.scale = this.scale.MAX;
-		} else if (this.settings.scale + scaleRatio < this.scale.MIN) {
+		} else if (nextScaleRatio < this.scale.MIN) {
 			this.settings.scale = this.scale.MIN;
 		} else {
-			this.settings.scale += scaleRatio;
+			this.settings.scale = nextScaleRatio;
 		}
 
 		// console.log("scale", scaleRatio, `scale(${this.settings.scale})`);
