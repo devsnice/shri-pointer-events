@@ -178,12 +178,12 @@ class Webcam {
 		const brightnessIncrement = mapRadiansToBrightness(turnInRadians);
 
 		// TODO: refactoring, [min, max]
-		if (brightnessIncrement > this.brightness.MAX) {
+		if (this.settings.brightness + brightnessIncrement > this.brightness.MAX) {
 			this.settings.brightness = this.brightness.MAX;
-		} else if (brightnessIncrement < this.brightness.MIN) {
+		} else if (this.settings.brightness + brightnessIncrement < this.brightness.MIN) {
 			this.settings.brightness = this.brightness.MIN;
 		} else {
-			this.settings.brightness = brightnessIncrement;
+			this.settings.brightness += brightnessIncrement;
 		}
 
 		this.renderIndicator("brightness", this.settings.brightness);
